@@ -60,7 +60,9 @@ AUTHOR	=	vnieto-j
 
 LIBFT_PATH = ./libft
 
-LIBS = -L./libft
+LIBFT = $(LIBFT_PATH)/libft.a
+
+LIBS = -L$(LIBFT_PATH) -lft
 
 ################################################################################
 #                                 PROGRAM'S SRCSS                               #
@@ -87,13 +89,13 @@ all : $(SERVER) $(CLIENT)
 
 $(NAME): all
 
-$(SERVER): $(LIBS)
-	@ $(CC) $(CFLAGS) $(SRC_S) $(LIBS) $(INC_DIR) -o $(SERVER)
+$(SERVER): $(LIBFT)
+	@ $(CC) $(CFLAGS) $(SRC_S) $(LIBS) -o $(SERVER)
 	@printf "$(SUCCESS) Server ready.\n"
 
-$(CLIENT): $(LIBS)
-	@ $(CC) $(CFLAGS) $(SRC_C) $(LIBS) $(INC_DIR) -o $(CLIENT)
-	@printf "$(SUCCESS) Slient ready.\n"
+$(CLIENT): $(LIBFT)
+	@ $(CC) $(CFLAGS) $(SRC_C) $(LIBS) -o $(CLIENT)
+	@printf "$(SUCCESS) Client ready.\n"
 
 $(LIBFT_PATH)/libft.a :
 	@printf "\t$(BOLD)$(BMAGENTA)Execution de make dans $(LIBFT_PATH)$(RESET)\n\n"
@@ -102,16 +104,16 @@ $(LIBFT_PATH)/libft.a :
 clean :
 	@printf "\t$(BOLD)$(INFO)Libft clean$(RESET)\n\n"
 	@make -s -C $(LIBFT_PATH) clean 
-	@$(RM) $(CLIENT $(SERVER))
+	@$(RM) $(CLIENT) $(SERVER)
 	@printf "\t$(BOLD)$(SUCCESS) Client removed$(RESET)\n\n"
 	@printf "\t$(BOLD)$(SUCCESS) Server removed$(RESET)\n\n"
 
 fclean : clean
-	@make -s -C ./libft fclean
+	@make -s -C $(LIBFT_PATH) fclean
 	@$(RM) $(NAME) $(OBJS)
 
 re :
-	@make -s -C /libft re
+	@make -s -C $(LIBFT_PATH) re
 	@make fclean
 	@make all
 
